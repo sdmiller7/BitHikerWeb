@@ -22,6 +22,13 @@ namespace BitHikerWeb.Controllers
             return View();
         }
 
+        public ActionResult HeatMap()
+        {
+
+            return View();
+
+        }
+
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";

@@ -1,0 +1,54 @@
+﻿@{
+    ViewBag.Title = "HeatMap";
+}
+
+<h2>HeatMap</h2>
+
+<div id="map_canvas" style="height: 900px; width: 900px;"></div>
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+
+ <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=visualization"></script>
+
+<script type="text/javascript">
+    
+
+    /* Data points defined as an array of LatLng objects */
+    var heatmapData =[];
+    var pointArray = new google.maps.MVCArray(heatmapData);
+
+    $(document).ready(function () {
+
+        var raleigh = new google.maps.LatLng(35.7719, -78.6389);
+
+        map = new google.maps.Map(document.getElementById('map_canvas'), {
+            center: raleigh,
+            zoom: 10,
+            mapTypeId: google.maps.MapTypeId.SATELLITE
+        });
+
+        var heatmap = new google.maps.visualization.HeatmapLayer({
+            data: pointArray
+        });
+        heatmap.setMap(map);
+
+        GetLocationData();
+
+    });
+
+    //Get the data from the API, loop through adding points to the system   
+    function GetLocationData() {
+ 
+        $.ajax({
+            url: 'http://bithikerapi.azurewebsites.net/api/prototype_exchanges?format=json',
+            dataType: 'jsonp',
+            success: function (data) {
+                $.each(data, function (index, element) {
+                    pointArray.push(new google.maps.LatLng(element.latitude, element.longitude));
+                });
+            }
+        });
+    }
+
+
+</script>
+
