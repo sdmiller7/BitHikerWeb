@@ -17,8 +17,28 @@
     var pointArray = new google.maps.MVCArray(heatmapData);
 
     $(document).ready(function () {
+        
 
         var raleigh = new google.maps.LatLng(35.7719, -78.6389);
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(success, error);
+        } else {
+            alert('geolocation not supported... Your Browser sucks!');
+        }
+
+        function success(position) {
+            alert("Found you at "  + position.coords.latitude + ', ' + position.coords.longitude);
+            
+           raleigh = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        }
+
+        function error(msg) {
+            alert('error: ' + msg);
+        }
+
+
+      
 
         map = new google.maps.Map(document.getElementById('map_canvas'), {
             center: raleigh,
